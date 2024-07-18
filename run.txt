@@ -1,0 +1,13 @@
+python3 prune_single.py -s /mnt/task_runtime/pruning_experiments/1336755 \
+        -m /mnt/task_runtime/pruning_experiments/1336755 --eval \
+        --pretrain_ply /mnt/task_runtime/pruning_experiments/1336755/pre_optimized.ply \
+        --pooling_size 1 \
+        --target_hvs 100 \
+        --target_ssim 0.99 \
+        --target_psnr 47.0 \
+        --pruning_iters 10 \
+        --final_adaptation_iters 0 \
+        --trial_name "47_psnr" \
+        --position_lr_init_scale 0.1 \
+        --metric max_comp_efficiency \
+        --sh_degree 1

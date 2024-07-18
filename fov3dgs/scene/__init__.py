@@ -46,7 +46,8 @@ class Scene:
             print("Found transforms_train.json file, assuming Blender data set!")
             scene_info = sceneLoadTypeCallbacks["Blender"](args.source_path, args.white_background, args.eval)
         else:
-            assert False, "Could not recognize scene type!"
+            scene_info = sceneLoadTypeCallbacks["presence"](args.source_path)
+            # assert False, "Could not recognize scene type!"
 
         if not self.loaded_iter:
             with open(scene_info.ply_path, 'rb') as src_file, open(os.path.join(self.model_path, "input.ply") , 'wb') as dest_file:
@@ -90,12 +91,18 @@ class Scene:
         point_cloud_path = os.path.join(self.model_path, "point_cloud/iteration_{}".format(iteration))
         self.gaussians.save_ply(os.path.join(point_cloud_path, "point_cloud.ply"))
 
-    def get_save_path(self, iteration):
+    def get_save_path(self, iteration, prefix = ""):
         point_cloud_path = os.path.join(self.model_path, "point_cloud/iteration_{}".format(iteration))
-        return os.path.join(point_cloud_path, "point_cloud.ply")
+        return os.path.join(point_cloud_path, f"point_cloud{prefix}.ply")
 
     def getTrainCameras(self, scale=1.0):
         return self.train_cameras[scale]
 
     def getTestCameras(self, scale=1.0):
         return self.test_cameras[scale]
+    
+    def get_image_save_path(self):
+        image_path = os.path.join(self.model_path, "images")
+        if not os.path.exists(image_path):
+            os.mkdir(image_path)
+        return image_path
